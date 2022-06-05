@@ -1,0 +1,6 @@
+apiVersion: aws.services.io/v1
+kind: S3Bucket
+metadata:
+  name: s3bucket-sample
+spec:
+  # TODO(user): Add fields here

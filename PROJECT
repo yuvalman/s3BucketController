@@ -1,0 +1,6 @@
+domain: services.io
+layout:
+- go.kubebuilder.io/v3
+projectName: s3bucketcontroller
+repo: github.com/yuvalman/s3BucketController
+version: "3"

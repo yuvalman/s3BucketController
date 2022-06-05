@@ -1,6 +1,6 @@
 resources:
 - manager.yaml
-
+- aws-secret.yaml
 generatorOptions:
   disableNameSuffixHash: true
 

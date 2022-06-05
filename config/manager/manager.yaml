@@ -31,7 +31,10 @@ spec:
         - /manager
         args:
         - --leader-elect
-        image: controller:latest
+        image: docker.io/yuvalman958/s3bucketcontroller:0.0.1
+        envFrom:
+          - secretRef:
+              name: s3-controller
         name: manager
         securityContext:
           allowPrivilegeEscalation: false

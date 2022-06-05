@@ -10,3 +10,4 @@ AWS S3 bucket controller for keeping desired state of public access permission f
 
 - The controller should be built on Linux.
 - kubebuilder should be [installed](https://book.kubebuilder.io/quick-start.html#installation) and it's [prerequisites](https://book.kubebuilder.io/quick-start.html#prerequisites).
+- For generating s3 ops mocks for unitest, mockgen should be [installed](https://github.com/golang/mock#installation)

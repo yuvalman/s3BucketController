@@ -1,0 +1,13 @@
+apiVersion: aws.services.io/v1
+kind: S3Bucket
+metadata:
+  name: bucket-crd
+  namespace: s3-demo
+spec:
+  name: crd-demo
+  region: eu-west-1
+  publicAccessBlock:
+    blockPublicACLs: true
+    blockPublicPolicy: true
+    ignorePublicACLs: true
+    restrictPublicBuckets: true

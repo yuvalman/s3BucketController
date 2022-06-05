@@ -17,7 +17,10 @@ limitations under the License.
 package main
 
 import (
+	"context"
 	"flag"
+	"github.com/yuvalman/s3BucketController/s3runtime"
+	"log"
 	"os"
 
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
@@ -78,9 +81,17 @@ func main() {
 		os.Exit(1)
 	}
 
+	ctx := context.Background()
+	s3c, err := s3runtime.ConfigureS3Client(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	s3ops := s3runtime.NewS3Ops(s3c)
+
 	if err = (&controllers.S3BucketReconciler{
 		Client: mgr.GetClient(),
 		Scheme: mgr.GetScheme(),
+		S3Ops:  s3ops,
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "S3Bucket")
 		os.Exit(1)

@@ -28,8 +28,17 @@ type S3BucketSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of S3Bucket. Edit s3bucket_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	// +kubebuilder:validation:Required
+	Name string `json:"name"`
+	Region string `json:"region"`
+	PublicAccessBlock *PublicAccessBlockConfiguration `json:"publicAccessBlock,omitempty"`
+}
+
+type PublicAccessBlockConfiguration struct {
+	BlockPublicACLs       bool `json:"blockPublicACLs,omitempty"`
+	BlockPublicPolicy     bool `json:"blockPublicPolicy,omitempty"`
+	IgnorePublicACLs      bool `json:"ignorePublicACLs,omitempty"`
+	RestrictPublicBuckets bool `json:"restrictPublicBuckets,omitempty"`
 }
 
 // S3BucketStatus defines the observed state of S3Bucket

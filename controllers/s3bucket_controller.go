@@ -18,6 +18,9 @@ package controllers
 
 import (
 	"context"
+	"github.com/yuvalman/s3BucketController/s3runtime"
+	"k8s.io/apimachinery/pkg/api/errors"
+	"time"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -31,6 +34,7 @@ import (
 type S3BucketReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
+	S3Ops  s3runtime.S3ops
 }
 
 //+kubebuilder:rbac:groups=aws.services.io,resources=s3buckets,verbs=get;list;watch;create;update;patch;delete
@@ -47,11 +51,21 @@ type S3BucketReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.11.2/pkg/reconcile
 func (r *S3BucketReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = log.FromContext(ctx)
+	l := log.FromContext(ctx)
+	var bucket awsv1.S3Bucket
+	if err := r.Get(ctx, req.NamespacedName, &bucket); err != nil {
+		if !errors.IsNotFound(err) {
+			l.Error(err, "unable to fetch bucket")
+		}
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
 
-	// TODO(user): your logic here
+	l.Info("=== Reconciling s3Bucket resource: " + bucket.Name)
 
-	return ctrl.Result{}, nil
+	if err := r.S3Ops.UpdatePublicAccessBlock(ctx, &bucket, l); err != nil {
+		return ctrl.Result{RequeueAfter: 1 * time.Second}, err
+	}
+	return ctrl.Result{RequeueAfter: 10 * time.Second}, nil
 }
 
 // SetupWithManager sets up the controller with the Manager.

@@ -29,8 +29,8 @@ type S3BucketSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// +kubebuilder:validation:Required
-	Name string `json:"name"`
-	Region string `json:"region"`
+	Name              string                          `json:"name"`
+	Region            string                          `json:"region"`
 	PublicAccessBlock *PublicAccessBlockConfiguration `json:"publicAccessBlock,omitempty"`
 }
 
